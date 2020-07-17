@@ -7,7 +7,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y krb5-user
 
 # Install libgdiplus - we use it to manipulate images
-RUN apt-get install -y libgdiplus
+RUN apt-get update && apt-get install -y libgdiplus
 
  # Install Chrome
  RUN apt-get update && apt-get install -y \
@@ -30,10 +30,15 @@ RUN apt-get install -y libgdiplus
     google-chrome-stable \
     --no-install-recommends
 
-# Clear caches
-RUN  apt-get purge --auto-remove -y curl \
-    && rm -rf /var/lib/apt/lists/*
+# install chromedriver
+RUN apt-get update && apt-get install -yqq unzip \
+    && wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip \
+    && unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
 
 # Install xvfb
 RUN apt-get update && apt-get install -y \
     xvfb
+
+# Clear caches
+RUN  apt-get purge --auto-remove -y curl \
+    && rm -rf /var/lib/apt/lists/*
