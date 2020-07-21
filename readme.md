@@ -30,7 +30,8 @@ appropriate source code and set the current folder to the root of the source. Th
 Often, additional steps are required for testing (e.g. starting Xvfb), plus maybe settings files are required for the test contexts.
 
 ## Gitlab
-The  following example shows a build file for a GitLab project, which has a build stage followed by a test phase, which includes an 'artifact' to upload the test results:
+The  following example shows a build file for a GitLab project, which has a build stage followed by a test phase, which includes an 'artifact' to upload the test results.
+GitLab CI/CD variables are used to pass a username and password for authentication to Kerberos (if you don't need Kerberos simply remove the kinit command):
 
 ```
 image: petethompson1968/selenium-spotfire-dotnet:2.1
@@ -42,18 +43,19 @@ stages:
 build:
   stage: build
   script:
-    - |
-      export DISPLAY=:20
-      Xvfb :20 -screen 0 1920x1080x16 &
-      dotnet test "--settings:$runSettings" --results-directory ./test-results
+    - dotnet build
 
 test:
   stage: test
   allow_failure: true
   script:
-    - dotnet test "--settings:$runSettings" --results-directory ./test-results
+    - |
+      kinit $KerberosUsername <<< $KerberosPassword
+      export DISPLAY=:20
+      Xvfb :20 -screen 0 1920x1080x16 &
+      dotnet test "--settings:$runSettings" --results-directory ./test-results
   artifacts:
     when: always
     paths: 
-    - test-results
+    - ./**/test-results
 ```
