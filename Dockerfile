@@ -1,5 +1,5 @@
 ARG DOTNET_VERSION=latest
-FROM mcr.microsoft.com/dotnet/core/sdk:${DOTNET_VERSION}
+FROM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION}
 
 ENV DEBIAN_FRONTEND=noninteractive
 

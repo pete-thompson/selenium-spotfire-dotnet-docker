@@ -34,7 +34,7 @@ The  following example shows a build file for a GitLab project, which has a buil
 GitLab CI/CD variables are used to pass a username and password for authentication to Kerberos (if you don't need Kerberos simply remove the kinit command):
 
 ```
-image: petethompson1968/selenium-spotfire-dotnet:2.1
+image: petethompson1968/selenium-spotfire-dotnet:5.0
 
 stages:
   - build
