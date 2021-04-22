@@ -33,11 +33,14 @@ RUN apt-get update && apt-get install -y libgdiplus
 # install chromedriver
 RUN apt-get update && apt-get install -yqq unzip \
     && wget -O /tmp/chromedriver.zip http://chromedriver.storage.googleapis.com/`curl -sS chromedriver.storage.googleapis.com/LATEST_RELEASE`/chromedriver_linux64.zip \
-    && unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/
+    && unzip /tmp/chromedriver.zip chromedriver -d /usr/local/bin/ \
+    && rm /tmp/chromedriver.zip
+
+# Install the ps command to aid with debug attaching in VS Code
+RUN apt-get update && apt-get install -y procps
 
 # Install xvfb
-RUN apt-get update && apt-get install -y \
-    xvfb
+RUN apt-get update && apt-get install -y xvfb
 
 # Clear caches
 RUN  apt-get purge --auto-remove -y curl \
